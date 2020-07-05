@@ -1,11 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Navigation from "./src/navigation";
 
-const App = () => {
-  return <Navigation/>;
+const cart = () => {
+  return (
+    <View>
+      <Text>cart screen</Text>
+    </View>
+  )
 }
 
-export default App
+export default cart
 
 const styles = StyleSheet.create({})
