@@ -13,7 +13,9 @@ import {
 
 var { height, width } = Dimensions.get("window");
 import Swiper from 'react-native-swiper';
+import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
+import AsyncStorage from "@react-native-community/async-storage";
 
 const App = () => {
   const [dataBanner, setDataBanner] = useState([]);
@@ -24,6 +26,33 @@ const App = () => {
   useEffect(() => {
     getData();
   }, [])
+
+  const onClickAddCart = (data) => {
+    const itemcart = {
+      food: data,
+      quantity:1,
+      price: data.price
+    }
+
+    AsyncStorage
+      .getItem("cart")
+      .then((datacart)=> {
+        if (datacart !== null) {
+          const cart = JSON.parse(datacart);
+          cart.push(datacart);
+          AsyncStorage.setItem("cart", JSON.stringify(cart));
+        } 
+        else {
+          const cart = [];
+          cart.push(itemcart);
+          AsyncStorage.setItem("cart", JSON.stringify(cart));
+        }
+        alert("Alert Succeessful");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
 
   const getData = async () => {
     await axios.get("http://tutofox.com/foodapp/api.json")
@@ -69,7 +98,36 @@ const App = () => {
             {item.name}
           </Text>
           <Text>Descp Food and Details</Text>
-          <Text style={{fontSize:20,color:"green"}}>${item.price}</Text>
+          <Text style={{fontSize:20,color:"#33c37d"}}>${item.price}</Text>
+          {/* button add cart */}
+          <TouchableOpacity
+            style={{
+              width: (width/2)-40,
+              backgroundColor: "#33c37d",
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 5,
+              padding: 4,
+              flexDirection: 'row'
+            }}
+            onPress={()=> onClickAddCart(item)}
+          >
+            <Text
+              style={{
+                fontSize:18,
+                color:'white',
+                fontWeight:'bold'
+              }}
+            >
+              add cart
+            </Text>
+            <View style={{width: 10}}/>
+            <Icon 
+              name="add-circle" 
+              size={30}
+              color="white"
+            />
+          </TouchableOpacity>
         </TouchableOpacity>
       )
     }
@@ -105,7 +163,8 @@ const App = () => {
           </Swiper>
         </View>
         <View style={styles.categoryContainer}>
-          <Text style={styles.titleCategories}> Categories {selectCatg} </Text>
+          {/* <Text style={styles.titleCategories}> Categories {selectCatg} </Text> */}
+          <View style={{height: 10}}/>
           <FlatList
             horizontal={true}
             data={dataCategories}

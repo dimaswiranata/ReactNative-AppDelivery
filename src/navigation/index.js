@@ -13,22 +13,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator 
-        initialRouteName="Home"
+        initialRouteName="Food"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === 'Home') {
+            if (route.name === 'Food') {
               iconName = focused
-                ? 'home'
-                : 'home-outline';
+                ? 'restaurant'
+                : 'restaurant-outline';
             } else if (route.name === 'Address') {
               iconName = focused 
-                ? 'at-circle' 
-                : 'at-circle-outline';
+                ? 'map' 
+                : 'map-outline';
             } else if (route.name === 'Cart') {
               iconName = focused 
-                ? 'basket-sharp' 
+                ? 'basket' 
                 : 'basket-outline';
             } else if (route.name === 'Profile') {
               iconName = focused 
@@ -41,13 +41,13 @@ export default function App() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
+          activeTintColor: '#900',
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Address" component={AddressScreen} />
+        <Tab.Screen name="Food" component={HomeScreen} />
         <Tab.Screen name="Cart" component={CartScreen} />
+        <Tab.Screen name="Address" component={AddressScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
