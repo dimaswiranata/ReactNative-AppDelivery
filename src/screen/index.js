@@ -27,33 +27,6 @@ const App = () => {
     getData();
   }, [])
 
-  const onClickAddCart = (data) => {
-    const itemcart = {
-      food: data,
-      quantity:1,
-      price: data.price
-    }
-
-    AsyncStorage
-      .getItem("cart")
-      .then((datacart)=> {
-        if (datacart !== null) {
-          const cart = JSON.parse(datacart);
-          cart.push(datacart);
-          AsyncStorage.setItem("cart", JSON.stringify(cart));
-        } 
-        else {
-          const cart = [];
-          cart.push(itemcart);
-          AsyncStorage.setItem("cart", JSON.stringify(cart));
-        }
-        alert("Alert Succeessful");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  }
-
   const getData = async () => {
     await axios.get("http://tutofox.com/foodapp/api.json")
       .then((res) => {
@@ -130,6 +103,50 @@ const App = () => {
           </TouchableOpacity>
         </TouchableOpacity>
       )
+    }
+  }
+
+  const onClickAddCart = async (data) => {
+    const itemcart = {
+      food: data,
+      quantity:1,
+      price: data.price
+    }
+
+    // await AsyncStorage
+    //   .getItem('cart')
+    //   .then((datacart)=> {
+    //     if (datacart !== null) {
+    //       const cart = JSON.parse(datacart);
+    //       cart.push(itemcart);
+    //       AsyncStorage.setItem('cart', JSON.stringify(cart));
+    //     } 
+    //     else {
+    //       const cart = [];
+    //       cart.push(itemcart);
+    //       AsyncStorage.setItem('cart', JSON.stringify(cart));
+    //     }
+    //     alert("Alert Succeessful");
+    //   })
+    //   .catch((error) => {
+    //     alert(error.message);
+    //   });
+
+    try {
+      const datacart = await AsyncStorage.getItem('cart');
+      if (datacart !== null) {
+        const cart = JSON.parse(datacart);
+        cart.push(itemcart);
+        AsyncStorage.setItem('cart', JSON.stringify(cart));
+      }
+      else {
+        const cart = [];
+        cart.push(itemcart);
+        AsyncStorage.setItem('cart', JSON.stringify(cart));
+      }
+      alert("Alert Succeessful");
+    } catch (error) {
+      alert(error.message);
     }
   }
 

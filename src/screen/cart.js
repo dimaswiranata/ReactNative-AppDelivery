@@ -14,17 +14,31 @@ const cart = () => {
     getDataCart();
   }, [])
 
-  const getDataCart = () => {
-    AsyncStorage.getItem('cart').then((cart)=>{
-      if (cart !== null) {
-        // We have data!!
-        const cartfood = JSON.parse(cart);
+  const getDataCart = async () => {
+
+    // await AsyncStorage.getItem('cart').then((datacart)=>{
+    //   if (datacart !== null) {
+    //     // We have data!!
+    //     const cartfood = JSON.parse(datacart);
+    //     setDataCart(cartfood);
+    //   }
+    // })
+    // .catch((err)=>{
+    //   alert(err.message)
+    // })
+
+    try {
+      const datacart = await AsyncStorage.getItem('cart');
+      console.log(datacart);
+      if (datacart !== null) {
+        // let cartfood = [];
+        const cartfood = JSON.parse(datacart);
         setDataCart(cartfood);
+        console.log(dataCart);
       }
-    })
-    .catch((err)=>{
-      alert(err)
-    })
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   const onChangeQual = (i, type) => {
@@ -45,8 +59,6 @@ const cart = () => {
      dataCar.splice(i,1)
      setDataCart(dataCar);
     }
-
-    return dataCart;
   }
 
   return (
@@ -58,10 +70,11 @@ const cart = () => {
       <View style={{flex:1}}>
         <ScrollView>
           {
-            dataCart.map((item,i) => {
+            dataCart.map((item, i) => {
               return (
                 <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
-                  <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} />
+                  <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} />
+                  {/* <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} /> */}
                   <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
                     <View>
                       <Text style={{fontWeight:"bold", fontSize:20}}>{item.food.name}</Text>
@@ -71,10 +84,12 @@ const cart = () => {
                       <Text style={{fontWeight:'bold',color:"#33c37d",fontSize:20}}>${item.price*item.quantity}</Text>
                       <View style={{flexDirection:'row', alignItems:'center'}}>
                         <TouchableOpacity onPress={() => onChangeQual(i,false)}>
+                        {/* <TouchableOpacity> */}
                           <Icon name="remove-circle" size={35} color={"#33c37d"} />
                         </TouchableOpacity>
                         <Text style={{paddingHorizontal:8, fontWeight:'bold', fontSize:18}}>{item.quantity}</Text>
                         <TouchableOpacity onPress={() => onChangeQual(i,true)}>
+                        {/* <TouchableOpacity> */}
                           <Icon name="add-circle" size={35} color={"#33c37d"} />
                         </TouchableOpacity>
                       </View>
