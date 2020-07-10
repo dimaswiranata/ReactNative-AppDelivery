@@ -6,13 +6,36 @@ import AsyncStorage from "@react-native-community/async-storage";
 var { height, width } = Dimensions.get("window");
 
 
-const cart = () => {
+const cart = ({navigation}) => {
 
   const [dataCart, setDataCart] = useState([]);
 
+  // useEffect(() => {
+  //   getDataCart();
+  // }, [])
+
   useEffect(() => {
-    getDataCart();
-  }, [])
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Prevent default behavior
+      // e.preventDefault();
+  
+      // Do something manually
+      // ...
+      getDataCart();
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('tabLongPress', e => {
+  //     e.preventDefault();
+  //     // Do something
+  //     getDataCart();
+  //   });
+  
+  //   return unsubscribe;
+  // }, [navigation]);
 
   const getDataCart = async () => {
 
@@ -72,7 +95,7 @@ const cart = () => {
           {
             dataCart.map((item, i) => {
               return (
-                <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
+                <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}} key={i}>
                   <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} />
                   {/* <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} /> */}
                   <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
