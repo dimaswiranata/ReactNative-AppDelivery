@@ -52,12 +52,12 @@ const cart = ({navigation}) => {
 
     try {
       const datacart = await AsyncStorage.getItem('cart');
-      console.log(datacart);
+      console.log('isi async storage cart: ',datacart);
       if (datacart !== null) {
         // let cartfood = [];
         const cartfood = JSON.parse(datacart);
         setDataCart(cartfood);
-        console.log(dataCart);
+        console.log('isi dataCart: ',dataCart);
       }
     } catch (error) {
       alert(error.message);
@@ -69,18 +69,24 @@ const cart = ({navigation}) => {
     let cantd = dataCar[i].quantity;
 
     if (type) {
-     cantd = cantd + 1
-     dataCar[i].quantity = cantd
-     setDataCart(dataCar);
+      cantd = cantd + 1
+      dataCar[i].quantity = cantd
+      // setDataCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
+      getDataCart();
     }
     else if (type==false&&cantd>=2){
-     cantd = cantd - 1
-     dataCar[i].quantity = cantd
-     setDataCart(dataCar);
+      cantd = cantd - 1
+      dataCar[i].quantity = cantd
+      // setDataCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
+      getDataCart();
     }
     else if (type==false&&cantd==1){
-     dataCar.splice(i,1)
-     setDataCart(dataCar);
+      dataCar.splice(i,1)
+      // setDataCart(dataCar);
+      AsyncStorage.setItem('cart', JSON.stringify(dataCar));
+      getDataCart();
     }
   }
 
@@ -96,8 +102,8 @@ const cart = ({navigation}) => {
             dataCart.map((item, i) => {
               return (
                 <View style={{width:width-20,margin:10,backgroundColor:'transparent', flexDirection:'row', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}} key={i}>
-                  <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} />
-                  {/* <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} /> */}
+                  {/* <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} /> */}
+                  <Image resizeMode={"contain"} style={{width:width/3,height:width/3}} source={{uri: item.food.image}} />
                   <View style={{flex:1, backgroundColor:'trangraysparent', padding:10, justifyContent:"space-between"}}>
                     <View>
                       <Text style={{fontWeight:"bold", fontSize:20}}>{item.food.name}</Text>
